@@ -11,6 +11,7 @@ public class SRC_CameraController : MonoBehaviour
     public float sensitivity = 5.0f; //Global sensitivity
     public float smoothing = 2.0f; //Global smoothing
     GameObject character; //Gameobject to rotate
+    private Vector3 direction;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +41,19 @@ public class SRC_CameraController : MonoBehaviour
         transform.localRotation = Quaternion.Euler(-mouseLook.y, mouseLook.x, 0f);
         //Set rotation of parent object, which rotates the robot body. It only turns the body horizontally.
         character.transform.localRotation = Quaternion.AngleAxis(charLook.x, character.transform.up);
+
+
+        //This piece of code is dedicated to setting the angle of the player to match the terrain's angle.
+        RaycastHit hit;
+        direction = character.transform.TransformDirection(Vector3.up) * -1;
+        Ray ray = new Ray(character.transform.position, direction);
+        if (Physics.Raycast(ray, out hit))
+        {
+            Debug.DrawRay(character.transform.position, direction, Color.green, 5, false);
+            print(hit.normal);
+            print(hit.transform.eulerAngles);
+            character.transform.rotation = Quaternion.FromToRotation(character.transform.up, hit.normal) * character.transform.rotation;
+        }
 
         //Unlock the cursor is you hit the escape button
         if (Input.GetKeyDown("escape"))
