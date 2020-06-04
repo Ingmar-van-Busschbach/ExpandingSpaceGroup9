@@ -11,6 +11,7 @@ public class SRC_CameraController : MonoBehaviour
     public float sensitivity = 5.0f; //Global sensitivity
     public float smoothing = 2.0f; //Global smoothing
     GameObject character; //Gameobject to rotate
+    private Vector3 direction;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,7 @@ public class SRC_CameraController : MonoBehaviour
     void Update()
     {
         var mouseVector = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")); //Get input mouse
-        var charVector = new Vector2(Input.GetAxis("Horizontal")/5, Input.GetAxisRaw("Mouse Y")); //Get input character
+        var charVector = new Vector2(Input.GetAxis("Horizontal")/10, Input.GetAxisRaw("Mouse Y")); //Get input character
         mouseVector = Vector2.Scale(mouseVector, new Vector2(sensitivity * smoothing, sensitivity * smoothing)); //Scale input mouse
         charVector = Vector2.Scale(charVector, new Vector2(sensitivity * smoothing, sensitivity * smoothing)); //Scale input character
         smoothMouse.x = Mathf.Lerp(smoothMouse.x, mouseVector.x, 1f / smoothing); //Smooth mouse X
@@ -40,6 +41,19 @@ public class SRC_CameraController : MonoBehaviour
         transform.localRotation = Quaternion.Euler(-mouseLook.y, mouseLook.x, 0f);
         //Set rotation of parent object, which rotates the robot body. It only turns the body horizontally.
         character.transform.localRotation = Quaternion.AngleAxis(charLook.x, character.transform.up);
+
+
+        //This piece of code is dedicated to setting the angle of the player to match the terrain's angle.
+        RaycastHit hit;
+        direction = character.transform.TransformDirection(Vector3.up) * -1;
+        Ray ray = new Ray(character.transform.position, direction);
+        if (Physics.Raycast(ray, out hit))
+        {
+            Debug.DrawRay(character.transform.position, direction, Color.green, 5, false);
+            print(hit.normal);
+            print(hit.transform.eulerAngles);
+            character.transform.rotation = Quaternion.FromToRotation(character.transform.up, hit.normal) * character.transform.rotation;
+        }
 
         //Unlock the cursor is you hit the escape button
         if (Input.GetKeyDown("escape"))
