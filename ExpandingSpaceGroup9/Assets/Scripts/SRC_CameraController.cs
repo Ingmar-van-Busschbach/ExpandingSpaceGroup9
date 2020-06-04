@@ -24,7 +24,7 @@ public class SRC_CameraController : MonoBehaviour
     void Update()
     {
         var mouseVector = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")); //Get input mouse
-        var charVector = new Vector2(Input.GetAxis("Horizontal")/5, Input.GetAxisRaw("Mouse Y")); //Get input character
+        var charVector = new Vector2(Input.GetAxis("Horizontal")/10, Input.GetAxisRaw("Mouse Y")); //Get input character
         mouseVector = Vector2.Scale(mouseVector, new Vector2(sensitivity * smoothing, sensitivity * smoothing)); //Scale input mouse
         charVector = Vector2.Scale(charVector, new Vector2(sensitivity * smoothing, sensitivity * smoothing)); //Scale input character
         smoothMouse.x = Mathf.Lerp(smoothMouse.x, mouseVector.x, 1f / smoothing); //Smooth mouse X
