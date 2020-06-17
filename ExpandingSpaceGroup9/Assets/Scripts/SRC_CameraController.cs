@@ -50,9 +50,9 @@ public class SRC_CameraController : MonoBehaviour
         Ray ray = new Ray(character.transform.position, direction);
         if (Physics.Raycast(ray, out hit))
         {
-            Debug.DrawRay(character.transform.position, direction, Color.green, 5, false);
-            print(hit.normal);
-            print(hit.transform.eulerAngles);
+            //Debug.DrawRay(character.transform.position, direction, Color.green, 5, false);
+            //print(hit.normal);
+            //print(hit.transform.eulerAngles);
             character.transform.rotation = Quaternion.FromToRotation(character.transform.up, hit.normal) * character.transform.rotation;
         }
 
