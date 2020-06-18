@@ -17,7 +17,7 @@ public class SRC_PlayerInventory : MonoBehaviour
 
     public void RemoveItem(int index) //Remove item function for dropping items off at mothership
     {
-        pickups[index] = false; //Sets item to false based on index of pick-up-able item
+        //pickups[index] = false; //Sets item to false based on index of pick-up-able item
         //UI inventory link here
     }
 

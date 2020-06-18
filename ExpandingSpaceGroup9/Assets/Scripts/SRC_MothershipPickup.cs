@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SRC_MothershipPickup : MonoBehaviour
 {
+    private AudioSource audioData;
     private SRC_PlayerInventory playerInventory; //What script is going to be affected on player side
     private SRC_PlayerHealth playerHealth; //What script is going to be affected on player side
     private SRC_MothershipInventory mothershipInventory; //What script is going to be affected on own side
@@ -11,6 +12,7 @@ public class SRC_MothershipPickup : MonoBehaviour
     void Start()
     {
         mothershipInventory = this.GetComponent<SRC_MothershipInventory>(); //Get own inventory
+        audioData = GetComponent<AudioSource>();
     }
 
     void OnTriggerEnter(Collider collision) //On volume enter event
@@ -22,7 +24,9 @@ public class SRC_MothershipPickup : MonoBehaviour
             playerHealth = collision.gameObject.GetComponent<SRC_PlayerHealth>(); //Get script to affect
             playerHealth.targetHealth = 100; //Set target health
             playerHealth.damagePerSecond = 1f; //Heal the player on entering
+            audioData.Play(0); //Play sound effect
             playerHealth.OnHealed(0.5f, 500);
+
         }
     }
     void OnTriggerExit(Collider collision) //On volume enter event
