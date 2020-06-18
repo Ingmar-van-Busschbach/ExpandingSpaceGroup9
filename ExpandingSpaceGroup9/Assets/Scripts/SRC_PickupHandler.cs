@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class SRC_PickupHandler : MonoBehaviour
 {
+    private AudioSource audioData;
+
+    void Start()
+    {
+        audioData = GetComponent<AudioSource>();
+    }
+
     private SRC_PlayerInventory playerInventory; //What script is going to be affected on player side
     [SerializeField] private int itemIndex; //Item index
 
@@ -14,7 +21,14 @@ public class SRC_PickupHandler : MonoBehaviour
             Debug.Log(itemIndex + " Picked Up");
             playerInventory = collision.gameObject.GetComponent<SRC_PlayerInventory>(); //Get script to affect
             playerInventory.PickUpItem(itemIndex); //Pick up item
-            Destroy(this.gameObject); //Destroy self
+            audioData.Play(0); //Play sound effect 
+            StartCoroutine(DelayedDestroy(0.5f)); //Delay destroy self so sound can play
         }
+    }
+
+    IEnumerator DelayedDestroy(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(this.gameObject); //Destroy self
     }
 }

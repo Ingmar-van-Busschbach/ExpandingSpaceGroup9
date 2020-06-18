@@ -10,6 +10,7 @@ public class SRC_CameraController : MonoBehaviour
     Vector2 smoothChar; //Smoothing of rotation of character
     public float sensitivity = 5.0f; //Global sensitivity
     public float smoothing = 2.0f; //Global smoothing
+    public float rotationSpeed = 10.0f; //Global rotation speed
     GameObject character; //Gameobject to rotate
     private Vector3 direction;
 
@@ -24,7 +25,7 @@ public class SRC_CameraController : MonoBehaviour
     void Update()
     {
         var mouseVector = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")); //Get input mouse
-        var charVector = new Vector2(Input.GetAxis("Horizontal")/10, Input.GetAxisRaw("Mouse Y")); //Get input character
+        var charVector = new Vector2(Input.GetAxis("Horizontal")*(1 / rotationSpeed), Input.GetAxisRaw("Mouse Y")); //Get input character
         mouseVector = Vector2.Scale(mouseVector, new Vector2(sensitivity * smoothing, sensitivity * smoothing)); //Scale input mouse
         charVector = Vector2.Scale(charVector, new Vector2(sensitivity * smoothing, sensitivity * smoothing)); //Scale input character
         smoothMouse.x = Mathf.Lerp(smoothMouse.x, mouseVector.x, 1f / smoothing); //Smooth mouse X
@@ -49,9 +50,9 @@ public class SRC_CameraController : MonoBehaviour
         Ray ray = new Ray(character.transform.position, direction);
         if (Physics.Raycast(ray, out hit))
         {
-            Debug.DrawRay(character.transform.position, direction, Color.green, 5, false);
-            print(hit.normal);
-            print(hit.transform.eulerAngles);
+            //Debug.DrawRay(character.transform.position, direction, Color.green, 5, false);
+            //print(hit.normal);
+            //print(hit.transform.eulerAngles);
             character.transform.rotation = Quaternion.FromToRotation(character.transform.up, hit.normal) * character.transform.rotation;
         }
 
